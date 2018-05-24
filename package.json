@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js"
   },
-  "author": "",
+  "author": "Marta",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^5.0.1",
