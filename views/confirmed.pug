@@ -1,0 +1,18 @@
+extends layout
+block content
+    body
+        .container
+            h5.card-title Confirmed Users:
+                .row
+                    each val in users
+                        .col-md-6
+                            .card.mb-3
+                                .card-body
+                                    p#id.card-text
+                                    | user's id: #{val.uuid}
+                                    p#email.card-text
+                                    | user's email: #{val.email}
+                                    p#status.card-text 
+                                    | status: #{val.status} 
+                                    br
+                                

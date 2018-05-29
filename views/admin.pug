@@ -1,0 +1,15 @@
+extends layout
+block content
+    .container
+            .row
+                br
+                h4 USERS
+                .col-md-6
+                    br
+                    each val in users
+                        ul.list-group.list-group-flush.mb-3
+                                li.list-group-item user's id: #{val.uuid}
+                                li.list-group-item user's email: #{val.email}
+                                li.list-group-item user's status: #{val.status}
+        
+                                a.btn.btn-sm.btn-info(href='/confirmed') confirme
