@@ -113,7 +113,7 @@ app.get ('/users/verify/:token', (req, res) => {
         }
             console.log("User is Confirmed!");
             // redirect to
-            res.redirect('/register')
+            res.redirect('/admin')
             })    
           }
         }
