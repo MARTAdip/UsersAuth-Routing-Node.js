@@ -1,5 +1,3 @@
-
-
 /* var fs = require('fs');
 fs.writeFile("/tmp/test", "Hey there!", function(err) {
     if(err) {
@@ -23,7 +21,7 @@ const uuidv4 = require('uuid/v4');
 const express = require('express');
 var fs = require('fs');
 const app = express();
-var path = require('path');
+
 
 
 
@@ -55,16 +53,19 @@ app.get('/register', (req, res) => {
 app.get('/admin', (req, res) => {
     console.log("Route /admin")
     var usersArray = fs.readdirSync('./usersFile')
-    var allUsers = [];
+    var confirmedUsers = [];
+    var unconfirmedUsers = [];
     usersArray.forEach(list => {
         var readingFile = fs.readFileSync(`./usersFile/${list}`)
         var registredUser = JSON.parse(readingFile)
-        if( registredUser.status === 'unconfirmed' && 'confirmed') {
-            allUsers.push(registredUser)
+        if( registredUser.status === 'confirmed') {
+            confirmedUsers.push(registredUser)
+        } else {
+            unconfirmedUsers.push(registredUser)
         }
     })
    
-    res.render('admin', {users: allUsers})
+    res.render('admin', {users: confirmedUsers, unconfirmedUsers: unconfirmedUsers})
 })
 
 
@@ -93,6 +94,32 @@ res.send('user created')
 
 })
 
+app.get ('/users/verify/:token', (req, res) => {
+    console.log("Route /verify user")
+    console.log(req.params.token)
+    
+    fs.readFile(`./usersFile/${req.params.token}.json`, (err, file) => {
+        if(err) {
+            console.log("error " , err)
+        } else {
+        var file = JSON.parse(file)
+        // set the document status to confirmed
+        if(file.uuid === req.params.token) {
+            file.status = "confirmed";
+        // write file back
+        fs.writeFile(`./usersFile/${req.params.token}.json`, JSON.stringify(file), (err) => {
+        if (err) {
+            return console.log(err)
+        }
+            console.log("User is Confirmed!");
+            // redirect to
+            res.redirect('/register')
+            })    
+          }
+        }
+    }) 
+})
+    
 
 
 app.listen(process.env.PORT, () => console.log('App listening on port 4000'))
